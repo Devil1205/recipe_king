@@ -5,7 +5,6 @@ function Header() {
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const location  = useLocation().pathname;
-    console.log(location);
 
     return (
 
