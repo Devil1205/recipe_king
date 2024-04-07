@@ -6,15 +6,22 @@ import { useParams } from 'react-router-dom';
 import { getRecipeDetails } from '../../actions/recipeAction';
 import Loader from '../layout/Loader/Loader';
 import MetaData from '../layout/MetaData';
+import {useAlert} from 'react-alert';
 
 function RecipeDetails() {
 
   const dispatch = useDispatch();
   const { recipe, loading, error } = useSelector(state => state.recipeDetails);
   const params = useParams();
+  const alert= useAlert();
 
   useEffect(() => {
     dispatch(getRecipeDetails(params.id));
+    if(error)
+    {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
   }, [])
 
 

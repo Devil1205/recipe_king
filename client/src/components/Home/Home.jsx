@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import RecipeCard from './RecipeCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRecipes } from '../../actions/recipeAction';
+import { clearErrors, getRecipes } from '../../actions/recipeAction';
 import Loader from '../layout/Loader/Loader';
 import { useSearchParams } from 'react-router-dom';
 import MetaData from '../layout/MetaData';
+import {useAlert} from 'react-alert';
 
 function Home() {
 
@@ -15,6 +16,7 @@ function Home() {
   const { recipes, loading, error } = useSelector(state => state.recipes);
   let [searchParams, setSearchParams] = useSearchParams();
   const [currPage, setCurrPage] = useState(0);
+  const alert= useAlert();
 
   const prevPageHandle = ()=>{
     setCurrPage(elem=>elem-1);
@@ -26,6 +28,12 @@ function Home() {
 
   useEffect(() => {
     dispatch(getRecipes(searchParams.get("query"), currPage*10));
+    if(error)
+    {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+      
   }, [currPage, searchParams])
 
 
